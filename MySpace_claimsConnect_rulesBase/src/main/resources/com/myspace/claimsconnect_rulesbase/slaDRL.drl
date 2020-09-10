@@ -1,0 +1,53 @@
+package com.myspace.claimsconnect_rulesbase;
+import com.myspace.claimsconnect_rulesbase.slaObject;
+import com.myspace.claimsconnect_rulesbase.slaResult;
+import java.util.ArrayList;
+import java.util.List;
+
+ruleflow-group "slaDRL"
+rule "RINOPR"
+when
+$slaObject:slaObject(slaObject.claimType=="Life" && slaObject.persona=="RINOPR" && slaObject.status=="pending")
+
+$a:  ArrayList()  
+              from collect( com.myspace.claimsconnect_rulesbase.slaResult( ) from $slaObject.getSlaResult()) 
+then
+
+$a.add(new com.myspace.claimsconnect_rulesbase.slaResult("assessor","Escalation","15m",false,"1","operator"));
+
+$slaObject.setSlaResult($a);
+$a.add(new com.myspace.claimsconnect_rulesbase.slaResult("RINMNG","Escalation","15m",false,"1","role"));
+System.out.println("Triggered"+$a);
+$slaObject.setSlaResult($a);
+$a.add(new com.myspace.claimsconnect_rulesbase.slaResult("CLMMNG","Escalation","15m",false,"2","role"));
+
+$slaObject.setSlaResult($a);
+System.out.println("triggred rules RINOPR");
+end;
+
+
+
+ruleflow-group "slaDRL"
+rule "UNDWRT"
+when
+$slaObject:slaObject(slaObject.claimType=="Life" && slaObject.persona=="UNDWRT" && slaObject.status=="pending")
+
+$a:  ArrayList()  
+              from collect( com.myspace.claimsconnect_rulesbase.slaResult( ) from $slaObject.getSlaResult()) 
+then
+
+$a.add(new com.myspace.claimsconnect_rulesbase.slaResult("owner","Escalation","15m",false,"1","operator"));
+System.out.println("Triggered"+$a);
+$slaObject.setSlaResult($a);
+$a.add(new com.myspace.claimsconnect_rulesbase.slaResult("UNDMNG","Escalation","15m",false,"2","role"));
+
+$slaObject.setSlaResult($a);
+$a.add(new com.myspace.claimsconnect_rulesbase.slaResult("CLMMNG","Escalation","15m",false,"2","role"));
+
+$slaObject.setSlaResult($a);
+
+$a.add(new com.myspace.claimsconnect_rulesbase.slaResult("abc","Escalation","15m",false,"3","role"));
+
+$slaObject.setSlaResult($a);
+System.out.println("triggred rules UNDWRT");
+end;
